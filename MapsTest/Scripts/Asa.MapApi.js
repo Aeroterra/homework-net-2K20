@@ -46,11 +46,12 @@ mapApp.initMap = function (callback) {
 
 mapApp.initMap(function () {
     mapApp.getPOIs(function (pois) {
-        require(["esri/graphic", "esri/geometry/Point", "dojo/domReady!"],
-            function (Graphic, Point, GraphicLayer) {
+        //console.log(pois);
+        require(["esri/graphic", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "dojo/domReady!"],
+            function (Graphic, Point, webMercatorUtils) {
                 pois.forEach(function (poiData) {
-
-                    var poi = new Point(poiData.XLon, poiData.YLat, mapApp.map.spatialReference)
+                    var coors = webMercatorUtils.lngLatToXY(poiData.XLon, poiData.YLat,)
+                    var poi = new Point(coors[0], coors[1], mapApp.map.spatialReference)
                     mapApp.POIsLayer.add(new Graphic(poi, mapApp.POIsSymbol, poiData));
                 })
                 
